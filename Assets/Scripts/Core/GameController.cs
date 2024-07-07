@@ -38,7 +38,7 @@ namespace Core
                 {
                     if (!cell.Dropped && _player.UseShovel())
                     {
-                        _uiManager.SetShavelText(_player.Shovels);
+                        _uiManager.SetInstrumentsText(_player.Shovels);
                         cell.Dig();
                     }
                 }
@@ -47,8 +47,8 @@ namespace Core
             _baseDropSpot.OnReceiveItem += () =>
             {
                 _player.CollectItem();
-                _uiManager.SetGoldText(_player.Bag);
-                _uiManager.SetShavelText(_player.Shovels);
+                _uiManager.SetBagText(_player.Bag);
+                _uiManager.SetInstrumentsText(_player.Shovels);
             };
             
             _dragAndDrop.Initialize(_input);
@@ -60,8 +60,8 @@ namespace Core
             }
 
             _uiManager.OnRestart = RestartGame;
-            _uiManager.SetShavelText(_player.Shovels);
-            _uiManager.SetGoldText(_player.Bag);
+            _uiManager.SetInstrumentsText(_player.Shovels);
+            _uiManager.SetBagText(_player.Bag);
         }
 
         private void Update()
@@ -84,8 +84,8 @@ namespace Core
             _dataManager.DeleteAll();
             _player.Initialize(50);
             _grid.Initialize(10, 3);
-            _uiManager.SetShavelText(_player.Shovels);
-            _uiManager.SetGoldText(_player.Bag);
+            _uiManager.SetInstrumentsText(_player.Shovels);
+            _uiManager.SetBagText(_player.Bag);
         }
     }
 }

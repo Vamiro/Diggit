@@ -9,25 +9,29 @@ namespace UI
 {
     public class UIManager : MonoBehaviour
     {
-        [SerializeField] private TMP_Text ShovelText;
-        [SerializeField] private TMP_Text GoldText;
+        [SerializeField] private TMP_Text InstrumentsText;
+        private string _instrumentsText;
+        [SerializeField] private TMP_Text BagText;
+        private string _bagText;
         [SerializeField] private Button RestartButton;
         
         public UnityAction OnRestart;
 
         private void Start()
         {
+            _instrumentsText = InstrumentsText.text;
+            _bagText = BagText.text;
             RestartButton.onClick.AddListener(() => OnRestart?.Invoke());
         }
 
-        public void SetShavelText(int amount)
+        public void SetInstrumentsText(int amount)
         {
-            ShovelText.SetText("SHAVELS: " + amount);
+            InstrumentsText.SetText(_instrumentsText + " " + amount);
         }
         
-        public void SetGoldText(int amount)
+        public void SetBagText(int amount)
         {
-            GoldText.SetText("GOLD: " + amount);
+            BagText.SetText(_bagText + " " + amount);
         }
     }
 }

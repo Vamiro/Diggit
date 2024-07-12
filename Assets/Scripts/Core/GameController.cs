@@ -1,24 +1,25 @@
-﻿using System;
+﻿using Configurations;
 using GameInput;
+using ModestTree;
 using PlayerDir;
 using UI;
-using Unity.VisualScripting;
 using UnityEngine;
 using WorldObjects;
-using Zenject;
+
 
 namespace Core
 {
     public class GameController : MonoBehaviour
     {
         [SerializeField] private CellGrid _grid;
+        [SerializeField] private string _saveFileDir = "SaveDefault";
         [SerializeField] private Player _player;
         private IInput _input;
         [SerializeField] private DesktopInput _desktopInput;
         [SerializeField] private DragAndDrop _dragAndDrop;
-        [SerializeField] private DataManager _dataManager;
         [SerializeField] private BaseDropSpot _baseDropSpot;
         [SerializeField] private UIManager _uiManager;
+        [SerializeField] private GameConfig _gameConfig;
 
         private void Start()
         {
@@ -28,17 +29,16 @@ namespace Core
         public void Initialize()
         {
             _input = _desktopInput;
-            _dataManager.RegisterDataObject(_player);
-            _dataManager.RegisterDataObject(_grid);
+            _dragAndDrop.Initialize(_input);
             
             _input.OnPress += hit =>
             {
                 var cell = hit.collider.GetComponentInParent<ICell>();
                 if (cell != null)
                 {
-                    if (!cell.Dropped && _player.UseShovel())
+                    if (!cell.CellInfo.dropped && _player.UseShovel())
                     {
-                        _uiManager.SetInstrumentsText(_player.Shovels);
+                        UpdateUI();
                         cell.Dig();
                     }
                 }
@@ -47,21 +47,21 @@ namespace Core
             _baseDropSpot.OnReceiveItem += () =>
             {
                 _player.CollectItem();
-                _uiManager.SetBagText(_player.Bag);
-                _uiManager.SetInstrumentsText(_player.Shovels);
+                UpdateUI();
             };
             
-            _dragAndDrop.Initialize(_input);
-
-            if (!_dataManager.LoadAll())
+            if (Data.DataManager.Instance.GetSaveList().IsEmpty())
             {
-                _player.Initialize(50);
-                _grid.Initialize(10, 3);
+                _player.Initialize(_gameConfig.ShovelsAmount);
+                _grid.Initialize(_gameConfig.GridSize, _gameConfig.GridDepth, _gameConfig.DropChance);
+            }
+            else
+            {
+                Data.DataManager.Instance.LoadGame(_saveFileDir);
             }
 
             _uiManager.OnRestart = RestartGame;
-            _uiManager.SetInstrumentsText(_player.Shovels);
-            _uiManager.SetBagText(_player.Bag);
+            UpdateUI();
         }
 
         private void Update()
@@ -76,14 +76,18 @@ namespace Core
 
         private void OnApplicationQuit()
         {
-            _dataManager.SaveAll();
+            Data.DataManager.Instance.SaveGame(_saveFileDir);
         }
 
         public void RestartGame()
         {
-            _dataManager.DeleteAll();
-            _player.Initialize(50);
-            _grid.Initialize(10, 3);
+            _player.Initialize(_gameConfig.ShovelsAmount);
+            _grid.Initialize(_gameConfig.GridSize, _gameConfig.GridDepth, _gameConfig.DropChance);
+            UpdateUI();
+        }
+
+        private void UpdateUI()
+        {
             _uiManager.SetInstrumentsText(_player.Shovels);
             _uiManager.SetBagText(_player.Bag);
         }

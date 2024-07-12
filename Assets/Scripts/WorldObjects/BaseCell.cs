@@ -6,32 +6,35 @@ using UnityEngine;
 
 namespace WorldObjects
 {
+    
+    
     public class BaseCell : MonoBehaviour, ICell
     {
+        public GameObject GetInstance => gameObject;
+        
         [SerializeField] public BaseBlock Block;
         [SerializeField] public BaseDrop Drop;
-
         private IBlock[] _blocks;
 
-        public GameObject GetInstance => gameObject;
-        public bool Dropped { get; set; }
-        public int MaxDepth { get; set; }
-        public int DropDepth { get; set; }
-        public int CurrentDepth { get; set;  }
-        public bool HasDrop { get; set; }
-        
-        public void Initialize(int depth)
+        private CellInfo _cellInfo = new();
+        public CellInfo CellInfo
+        {
+            get => _cellInfo;
+            set => _cellInfo = value;
+        }
+
+        public void Initialize(int depth, float dropChance = 0.2f)
         {
             _blocks = new IBlock[depth];
-            MaxDepth = depth;
-            CurrentDepth = 0;
-            Dropped = false;
+            _cellInfo.maxDepth = depth;
+            _cellInfo.currentDepth = 0;
+            _cellInfo.dropped = false;
             
-            HasDrop = UnityEngine.Random.value < 0.2f;
-            DropDepth = HasDrop ? UnityEngine.Random.Range(0, MaxDepth) : -1;
-            if(HasDrop) Debug.Log(gameObject.name + " -- HasDrop = " + HasDrop + "\nDropDepth = " + DropDepth);
+            _cellInfo.hasDrop = UnityEngine.Random.value < dropChance;
+            _cellInfo.dropDepth = _cellInfo.hasDrop ? UnityEngine.Random.Range(0, _cellInfo.maxDepth) : -1;
+            if(_cellInfo.hasDrop) Debug.Log(gameObject.name + " -- hasDrop = " + _cellInfo.hasDrop + "\ndropDepth = " + _cellInfo.dropDepth);
             
-            for (var i = 0; i < MaxDepth; i++)
+            for (var i = 0; i < _cellInfo.maxDepth; i++)
             {
                 var position = transform.position;
                 position.y -= i;
@@ -43,11 +46,11 @@ namespace WorldObjects
 
         public void Initialize()
         {
-            _blocks = new IBlock[MaxDepth];
+            _blocks = new IBlock[_cellInfo.maxDepth];
             
-            for (var i = 0; i < MaxDepth; i++)
+            for (var i = 0; i < _cellInfo.maxDepth; i++)
             {
-                if (i >= CurrentDepth)
+                if (i >= _cellInfo.currentDepth)
                 {
                     var position = transform.position;
                     position.y -= i;
@@ -57,26 +60,26 @@ namespace WorldObjects
                 }
                 else _blocks[i] = null;
             }
-            if(Dropped) SpawnDrop();
+            if(_cellInfo.dropped) SpawnDrop();
         }
 
         public void Dig()
         {
-            if (CurrentDepth < MaxDepth && !Dropped)
+            if (_cellInfo.currentDepth < _cellInfo.maxDepth && !_cellInfo.dropped)
             {
-                if(CurrentDepth == DropDepth) SpawnDrop();
-                _blocks[CurrentDepth].Destroy();
-                CurrentDepth++;
+                if(_cellInfo.currentDepth == _cellInfo.dropDepth) SpawnDrop();
+                _blocks[_cellInfo.currentDepth].Destroy();
+                _cellInfo.currentDepth++;
             }
         }
 
         public void SpawnDrop()
         {
-            Dropped = true;
+            _cellInfo.dropped = true;
             var position = transform.position;
-            position.y -= DropDepth;
+            position.y -= _cellInfo.dropDepth;
             var dropped = Instantiate(Drop.GetInstance, position, Quaternion.identity, transform);
-            dropped.GetComponent<IDrop>().Dropped += () => Dropped = false;
+            dropped.GetComponent<IDrop>().Dropped += () => _cellInfo.dropped = false;
         }
     }
 }

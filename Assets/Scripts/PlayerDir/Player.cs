@@ -1,12 +1,21 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Core;
+using Data;
 using WorldObjects;
 using UnityEngine;
 using Zenject;
 
 namespace PlayerDir
 {
-    public class Player : MonoBehaviour, IGameData
+    [Serializable]
+    public class PlayerData
+    {
+        public int Shovels;
+        public int Bag;
+    }
+    
+    public class Player : MonoBehaviour, ISavable<PlayerData>
     {
         public int Shovels { get; private set; }
         public int Bag { get; private set; }
@@ -30,16 +39,23 @@ namespace PlayerDir
             Shovels += 5;
         }
 
-        public void SaveState()
+        //[SerializeField] private string _id = Guid.NewGuid().ToString();
+        [SerializeField] private string _id = "PlayerSaveData";
+        public string Id => _id;
+        
+        public void LoadData(PlayerData data)
         {
-            PlayerPrefs.SetInt(gameObject.name + "_shovels", Shovels);
-            PlayerPrefs.SetInt(gameObject.name + "_bag", Bag);
+            Shovels = data.Shovels;
+            Bag = data.Bag;
         }
 
-        public void LoadState()
+        public PlayerData SaveData()
         {
-            Shovels = PlayerPrefs.GetInt(gameObject.name + "_shovels", 20);
-            Bag = PlayerPrefs.GetInt(gameObject.name + "_bag", 0);
+            return new PlayerData()
+            {
+                Shovels = this.Shovels,
+                Bag = this.Bag,
+            };
         }
     }
 }

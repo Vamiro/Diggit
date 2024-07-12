@@ -1,16 +1,23 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace WorldObjects
 {
+    [Serializable]
+    public class CellInfo
+    {
+        public bool dropped;
+        public bool hasDrop;
+        public int dropDepth;
+        public int currentDepth;
+        public int maxDepth;
+    }
+    
     public interface ICell
     {
-        GameObject GetInstance { get ; }
-        bool Dropped { get; set; }
-        bool HasDrop { get; set; }
-        int DropDepth { get; set; }
-        int CurrentDepth { get; set; }
-        int MaxDepth { get; set; }
-        void Initialize(int depth);
+        GameObject GetInstance { get; }
+        CellInfo CellInfo { get; set; }
+        void Initialize(int depth, float dropChance);
         void Initialize();
         void Dig();
     }

@@ -13,7 +13,7 @@ namespace Core
 
         public override void InstallBindings()
         {
-            Container.Bind<DataManager>().FromNew().AsSingle().NonLazy();
+            Container.Bind<PrefsManager>().FromNew().AsSingle().NonLazy();
             Container.Bind<IInput>().To<DesktopInput>().FromNew().AsSingle().NonLazy();
             Container.Bind<DragAndDrop>().FromNew().AsSingle().NonLazy();
             Container.Bind<Player>().FromComponentInNewPrefab(playerPrefab).AsSingle().NonLazy();

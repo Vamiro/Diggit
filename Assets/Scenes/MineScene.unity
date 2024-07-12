@@ -14,17 +14,17 @@ OcclusionCullingSettings:
 RenderSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 9
-  m_Fog: 0
+  m_Fog: 1
   m_FogColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
-  m_FogMode: 3
+  m_FogMode: 1
   m_FogDensity: 0.01
   m_LinearFogStart: 0
-  m_LinearFogEnd: 300
-  m_AmbientSkyColor: {r: 0.212, g: 0.227, b: 0.259, a: 1}
+  m_LinearFogEnd: 1000
+  m_AmbientSkyColor: {r: 1, g: 1, b: 1, a: 1}
   m_AmbientEquatorColor: {r: 0.114, g: 0.125, b: 0.133, a: 1}
   m_AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
   m_AmbientIntensity: 1
-  m_AmbientMode: 0
+  m_AmbientMode: 3
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
   m_SkyboxMaterial: {fileID: 2100000, guid: 20b26a1b6dc20ba4b910f8ef8ac7ef03, type: 2}
   m_HaloStrength: 0.5
@@ -33,12 +33,12 @@ RenderSettings:
   m_HaloTexture: {fileID: 0}
   m_SpotCookie: {fileID: 10001, guid: 0000000000000000e000000000000000, type: 0}
   m_DefaultReflectionMode: 0
-  m_DefaultReflectionResolution: 128
+  m_DefaultReflectionResolution: 2048
   m_ReflectionBounces: 1
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.48232487, g: 0.52459604, b: 0.42487964, a: 1}
+  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -203,8 +203,8 @@ Camera:
   m_GameObject: {fileID: 330585543}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 1
-  m_BackGroundColor: {r: 0, g: 0, b: 0, a: 1}
+  m_ClearFlags: 2
+  m_BackGroundColor: {r: 0.8301887, g: 0.79720193, b: 0.512994, a: 1}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -284,7 +284,7 @@ MonoBehaviour:
   m_VolumeTrigger: {fileID: 0}
   m_VolumeFrameworkUpdateModeOption: 2
   m_RenderPostProcessing: 1
-  m_Antialiasing: 0
+  m_Antialiasing: 1
   m_AntialiasingQuality: 2
   m_StopNaN: 0
   m_Dithering: 0
@@ -392,13 +392,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 410087039}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.40821788, y: -0.23456968, z: 0.10938163, w: 0.8754261}
+  m_LocalRotation: {x: 0.5735764, y: 0, z: 0, w: 0.8191521}
   m_LocalPosition: {x: 0, y: 3, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+  m_LocalEulerAnglesHint: {x: 70, y: 0, z: 0}
 --- !u!114 &410087042
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -480,7 +480,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 984697941}
-  - component: {fileID: 984697940}
+  - component: {fileID: 984697942}
   m_Layer: 0
   m_Name: Data
   m_TagString: Untagged
@@ -488,18 +488,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &984697940
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 984697939}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fb6d3ace1e9f470296736d2d8ee4902e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &984697941
 Transform:
   m_ObjectHideFlags: 0
@@ -515,6 +503,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &984697942
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 984697939}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff3b02d0d7a562b4cbc068ee3c9e3233, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &1046382834 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4348511166490200836, guid: c715925f6f4650a43a77be726f78ac13,
@@ -742,6 +742,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cellPrefab: {fileID: 1296119198}
+  _id: GridCellSaveData
 --- !u!1 &1398468102
 GameObject:
   m_ObjectHideFlags: 0
@@ -772,12 +773,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _grid: {fileID: 1358894625}
+  _saveFileDir: SaveDefault
   _player: {fileID: 1717580316}
   _desktopInput: {fileID: 1237815689}
   _dragAndDrop: {fileID: 162178283}
-  _dataManager: {fileID: 984697940}
   _baseDropSpot: {fileID: 5821809540880326735}
   _uiManager: {fileID: 1064584861}
+  _gameConfig: {fileID: 11400000, guid: 9efbab4444e6feb438f7173dedf44454, type: 2}
 --- !u!4 &1398468104
 Transform:
   m_ObjectHideFlags: 0
@@ -834,6 +836,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1ae28794b14b45809c5cc75b84dc7e9d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _id: PlayerSaveData
 --- !u!4 &1717580317
 Transform:
   m_ObjectHideFlags: 0
@@ -1183,36 +1186,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1471373967042135086, guid: 1ef3ea7a41a9d634282df9089833fbe2,
-        type: 3}
-      propertyPath: m_Size.x
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 1471373967042135086, guid: 1ef3ea7a41a9d634282df9089833fbe2,
-        type: 3}
-      propertyPath: m_Size.y
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 1471373967042135086, guid: 1ef3ea7a41a9d634282df9089833fbe2,
-        type: 3}
-      propertyPath: m_Size.z
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 1471373967042135086, guid: 1ef3ea7a41a9d634282df9089833fbe2,
-        type: 3}
-      propertyPath: m_Center.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1471373967042135086, guid: 1ef3ea7a41a9d634282df9089833fbe2,
-        type: 3}
-      propertyPath: m_Center.y
-      value: -0.3
-      objectReference: {fileID: 0}
-    - target: {fileID: 1471373967042135086, guid: 1ef3ea7a41a9d634282df9089833fbe2,
-        type: 3}
-      propertyPath: m_Center.z
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 4242247871173557829, guid: 1ef3ea7a41a9d634282df9089833fbe2,
         type: 3}
       propertyPath: m_Name

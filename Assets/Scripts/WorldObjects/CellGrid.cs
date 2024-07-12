@@ -86,7 +86,7 @@ namespace WorldObjects
                 _isRotating = true;
                 var rot = transform.rotation;
                 rot *= Quaternion.Euler(0, angle, 0);
-                transform.DORotateQuaternion(rot, 1)
+                transform.DORotateQuaternion(rot, 0.5f)
                     .SetEase(Ease.InOutCubic)
                     .OnComplete(() =>
                     {

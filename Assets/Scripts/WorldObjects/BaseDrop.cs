@@ -50,7 +50,7 @@ namespace WorldObjects
         {
             if (!_isDragging)
             {
-                transform.DOScale(2, 1);
+                transform.DOScale(2, 0.3f);
                 _isDragging = true;
                 gameObject.layer = LayerMask.NameToLayer("Ignore Raycast");
             }

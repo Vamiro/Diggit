@@ -1,4 +1,5 @@
 ﻿using System;
+using DG.Tweening;
 using GameInput;
 using UnityEngine;
 
@@ -16,6 +17,8 @@ namespace WorldObjects
 
         private void Awake()
         {
+            _dragStartPosition = transform.localPosition;
+            transform.localRotation = new Quaternion();
             _mainCamera = Camera.main;
         }
 
@@ -35,18 +38,11 @@ namespace WorldObjects
                     var dropSpot = hit.collider.GetComponent<IDropSpot>();
                     if (dropSpot != null)
                     {
-                        targetPosition = hit.transform.position + Vector3.up;
+                        targetPosition = hit.transform.position + Vector3.up * 1.2f;
                     }
                 }
                 transform.position = Vector3.Lerp(transform.position, targetPosition, Time.deltaTime * 10f);
                 
-            }
-            else
-            {
-                var rotation = transform.rotation;
-                rotation = Quaternion.Lerp(rotation, Quaternion.Inverse(rotation),
-                    Time.deltaTime * 10f);
-                transform.rotation = rotation;
             }
         }
 
@@ -54,7 +50,7 @@ namespace WorldObjects
         {
             if (!_isDragging)
             {
-                _dragStartPosition = transform.position;
+                transform.DOScale(2, 1);
                 _isDragging = true;
                 gameObject.layer = LayerMask.NameToLayer("Ignore Raycast");
             }
@@ -73,6 +69,7 @@ namespace WorldObjects
                 {
                     if (dropSpot.ReceiveItem(this))
                     {
+                        DOTween.KillAll();
                         Dropped?.Invoke();
                         Destroy(gameObject);
                     }
@@ -80,7 +77,9 @@ namespace WorldObjects
                 }
             }
             gameObject.layer = LayerMask.NameToLayer("Default");
-            transform.position = _dragStartPosition;
+            DOTween.KillAll();
+            transform.localScale = new Vector3(1, 1, 1);
+            transform.localPosition = _dragStartPosition;
         }
     }
 }

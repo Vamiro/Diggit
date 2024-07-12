@@ -4,6 +4,7 @@ using Core;
 using Data;
 using WorldObjects;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Zenject;
 
 namespace PlayerDir
@@ -11,32 +12,47 @@ namespace PlayerDir
     [Serializable]
     public class PlayerData
     {
-        public int Shovels;
+        public int Instruments;
         public int Bag;
+        public int Record;
     }
     
     public class Player : MonoBehaviour, ISavable<PlayerData>
     {
-        public int Shovels { get; private set; }
+        public int Record { get; private set; }
+        public int Instruments { get; private set; }
         public int Bag { get; private set; }
+        
+        public event Action OnInstrumentsEnded;
         
         public void Initialize(int initialShovels)
         {
-            Shovels = initialShovels;
+            Instruments = initialShovels;
             Bag = 0;
         }
 
-        public bool UseShovel()
+        public void UseShovel()
         {
-            if (Shovels <= 0) return false;
-            Shovels--;
-            return true;
+            Instruments--;
+            
+            if (Instruments <= 0)
+            {
+                OnInstrumentsEnded?.Invoke();
+            }
         }
 
         public void CollectItem()
         {
             Bag++;
-            Shovels += 5;
+            Instruments += 5;
+        }
+
+        public void UpdateRecord()
+        {
+            if (Record < Bag)
+            {
+                Record = Bag;
+            }
         }
 
         //[SerializeField] private string _id = Guid.NewGuid().ToString();
@@ -45,16 +61,18 @@ namespace PlayerDir
         
         public void LoadData(PlayerData data)
         {
-            Shovels = data.Shovels;
+            Instruments = data.Instruments;
             Bag = data.Bag;
+            Record = data.Record;
         }
 
         public PlayerData SaveData()
         {
             return new PlayerData()
             {
-                Shovels = this.Shovels,
+                Instruments = this.Instruments,
                 Bag = this.Bag,
+                Record = this.Record,
             };
         }
     }

@@ -1,4 +1,5 @@
-﻿using Configurations;
+﻿using System.Timers;
+using Configurations;
 using GameInput;
 using ModestTree;
 using PlayerDir;
@@ -36,11 +37,21 @@ namespace Core
                 var cell = hit.collider.GetComponentInParent<ICell>();
                 if (cell != null)
                 {
-                    if (!cell.CellInfo.dropped && _player.UseShovel())
+                    if (!cell.CellInfo.dropped && _player.Instruments > 0)
                     {
-                        UpdateUI();
                         cell.Dig();
+                        _player.UseShovel();
+                        UpdateUI();
                     }
+                }
+            };
+
+            _player.OnInstrumentsEnded += () =>
+            {
+                if (!_grid.CheckDrop())
+                {
+                    BaseWindow.Get<CancelGameWindow>().Show(_player.Bag, _player.Record);
+                    _player.UpdateRecord();
                 }
             };
 
@@ -60,7 +71,10 @@ namespace Core
                 Data.DataManager.Instance.LoadGame(_saveFileDir);
             }
 
+            BaseWindow.Get<CancelGameWindow>().OnTryAgain = RestartGame;
             _uiManager.OnRestart = RestartGame;
+            _uiManager.OnRotateLeft = () => _grid.RotateGrid(90);
+            _uiManager.OnRotateRight = () => _grid.RotateGrid(-90);
             UpdateUI();
         }
 
@@ -88,7 +102,7 @@ namespace Core
 
         private void UpdateUI()
         {
-            _uiManager.SetInstrumentsText(_player.Shovels);
+            _uiManager.SetInstrumentsText(_player.Instruments);
             _uiManager.SetBagText(_player.Bag);
         }
     }

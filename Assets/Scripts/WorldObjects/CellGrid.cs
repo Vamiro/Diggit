@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using Core;
 using Data;
 using UnityEngine;
-using Zenject;
+using DG.Tweening;
+
 
 namespace WorldObjects
 {
@@ -19,9 +18,19 @@ namespace WorldObjects
     public class CellGrid : MonoBehaviour, ISavable<CellGridData>
     {
         [SerializeField] public BaseCell cellPrefab;
+        [SerializeField] private float _padding = 1.02f;
         private ICell[,] _cells;
         private int _size;
         private int _depth;
+        private bool _isRotating;
+        private Vector3 _initialPosition;
+        private Quaternion _initialRotation;
+
+        private void Start()
+        {
+            _initialPosition = transform.position;
+            _initialRotation = transform.rotation;
+        }
 
         public void Initialize(int size, int depth, float dropChance)
         {
@@ -31,6 +40,9 @@ namespace WorldObjects
                 {
                     Destroy(cell.GetInstance);
                 }
+
+                transform.position = _initialPosition;
+                transform.rotation = _initialRotation;
             }
 
             _size = size;
@@ -42,8 +54,8 @@ namespace WorldObjects
                 for (var j = 0; j < _size; j++)
                 {
                     var position = transform.position;
-                    position.x += i * 1.1f;
-                    position.z += j * 1.1f;
+                    position.x += (i + 0.5f) * _padding - _size / 2f * _padding;
+                    position.z += (j + 0.5f) * _padding - _size / 2f * _padding;
                     var cellObj = Instantiate(cellPrefab, position, Quaternion.identity, transform);
                     cellObj.name = "Cell_" + i + "_" + j;
                     _cells[i, j] = cellObj.GetComponent<ICell>();
@@ -51,10 +63,49 @@ namespace WorldObjects
                 }
             }
         }
-        
+
         public ICell GetCell(int x, int y)
         {
             return _cells[x, y];
+        }
+
+        public bool CheckDrop()
+        {
+            foreach (var cell in _cells)
+            {
+                if (cell.CellInfo.dropped) return true;
+            }
+
+            return false;
+        }
+
+        public void RotateGrid(float angle)
+        {
+            if (!_isRotating)
+            {
+                _isRotating = true;
+                var rot = transform.rotation;
+                rot *= Quaternion.Euler(0, angle, 0);
+                transform.DORotateQuaternion(rot, 1)
+                    .SetEase(Ease.InOutCubic)
+                    .OnComplete(() =>
+                    {
+                        transform.rotation = rot;
+                        _isRotating = false;
+                    });
+            }
+        }
+
+        private void CalcGridCenter()
+        {
+            Vector3 sumVector = new Vector3(0f, 0f, 0f);
+
+            foreach (Transform child in transform)
+            {
+                sumVector += child.position;
+            }
+
+            var gridCenter = sumVector / transform.childCount;
         }
 
         //[SerializeField] private string _id = Guid.NewGuid().ToString();
@@ -72,8 +123,8 @@ namespace WorldObjects
                 for (var j = 0; j < _size; j++)
                 {
                     var position = transform.position;
-                    position.x += i * 1.1f;
-                    position.z += j * 1.1f;
+                    position.x += (i + 0.5f) * _padding - _size / 2f * _padding;
+                    position.z += (j + 0.5f) * _padding - _size / 2f * _padding;
                     var cellObj = Instantiate(cellPrefab, position, transform.rotation, transform);
                     cellObj.name = "Cell_" + i + "_" + j;
                     _cells[i, j] = cellObj.GetComponent<ICell>();

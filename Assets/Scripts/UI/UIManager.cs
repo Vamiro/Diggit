@@ -22,7 +22,7 @@ namespace UI
         public UnityAction OnRotateRight;
         
 
-        private void Start()
+        private void Awake()
         {
             _instrumentsText = InstrumentsText.text;
             _bagText = BagText.text;

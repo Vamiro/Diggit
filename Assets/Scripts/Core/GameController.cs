@@ -79,8 +79,8 @@ namespace Core
 
             BaseWindow.Get<CancelGameWindow>().OnTryAgain = RestartGame;
             _uiManager.OnRestart = RestartGame;
-            _uiManager.OnRotateLeft = () => _grid.RotateGrid(90);
-            _uiManager.OnRotateRight = () => _grid.RotateGrid(-90);
+            _uiManager.OnRotateLeft = () => _grid.RotateGrid(-90);
+            _uiManager.OnRotateRight = () => _grid.RotateGrid(90);
             _uiManager.OnMute = () =>
             {
                 SettingsManager.Instance.IsMuted = !SettingsManager.Instance.IsMuted;

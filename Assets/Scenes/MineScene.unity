@@ -481,6 +481,7 @@ GameObject:
   m_Component:
   - component: {fileID: 984697941}
   - component: {fileID: 984697942}
+  - component: {fileID: 984697943}
   m_Layer: 0
   m_Name: Data
   m_TagString: Untagged
@@ -513,6 +514,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ff3b02d0d7a562b4cbc068ee3c9e3233, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &984697943
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 984697939}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da48d5aa47344e2b9b621c1c8c837b33, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &1046382834 stripped
@@ -781,6 +794,7 @@ MonoBehaviour:
   _baseDropSpot: {fileID: 5821809540880326735}
   _uiManager: {fileID: 1064584861}
   _gameConfig: {fileID: 11400000, guid: 9efbab4444e6feb438f7173dedf44454, type: 2}
+  _audioMixer: {fileID: 24100000, guid: 1b4cb7fc4d440b1449bc12c4f407049e, type: 2}
 --- !u!4 &1398468104
 Transform:
   m_ObjectHideFlags: 0
@@ -861,16 +875,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 735901692621502752, guid: f70d88c3801b447438687ee7b2208a20,
-        type: 3}
-      propertyPath: m_BlockingObjects
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 1765179802488512558, guid: f70d88c3801b447438687ee7b2208a20,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 2335696832654118800, guid: f70d88c3801b447438687ee7b2208a20,
         type: 3}
       propertyPath: m_AnchorMax.y

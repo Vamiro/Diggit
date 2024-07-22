@@ -1,10 +1,13 @@
-﻿using System.Timers;
+﻿using System;
+using System.Timers;
 using Configurations;
 using GameInput;
 using ModestTree;
 using PlayerDir;
+using Settings;
 using UI;
 using UnityEngine;
+using UnityEngine.Audio;
 using WorldObjects;
 
 
@@ -21,6 +24,7 @@ namespace Core
         [SerializeField] private BaseDropSpot _baseDropSpot;
         [SerializeField] private UIManager _uiManager;
         [SerializeField] private GameConfig _gameConfig;
+        [SerializeField] private AudioMixer _audioMixer;
 
         private void Start()
         {
@@ -60,6 +64,8 @@ namespace Core
                 _player.CollectItem();
                 UpdateUI();
             };
+
+            SettingsManager.Instance.AudioMixer = _audioMixer;
             
             if (Data.DataManager.Instance.GetSaveList().IsEmpty())
             {
@@ -75,6 +81,12 @@ namespace Core
             _uiManager.OnRestart = RestartGame;
             _uiManager.OnRotateLeft = () => _grid.RotateGrid(90);
             _uiManager.OnRotateRight = () => _grid.RotateGrid(-90);
+            _uiManager.OnMute = () =>
+            {
+                SettingsManager.Instance.IsMuted = !SettingsManager.Instance.IsMuted;
+                _uiManager.SwitchMuteImage(SettingsManager.Instance.IsMuted);
+            };
+            _uiManager.SwitchMuteImage(SettingsManager.Instance.IsMuted);
             UpdateUI();
         }
 

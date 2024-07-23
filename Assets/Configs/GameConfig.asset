@@ -15,4 +15,4 @@ MonoBehaviour:
   GridSize: 10
   GridDepth: 3
   DropChance: 0.2
-  ShovelsAmount: 50
+  ShovelsAmount: 1

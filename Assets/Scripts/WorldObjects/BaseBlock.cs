@@ -18,6 +18,7 @@ namespace WorldObjects
             // mat.material.mainTextureOffset = new Vector2(Random.Range(0f, 10f), Random.Range(0f, 10f));
             _particleSystem = GetComponent<ParticleSystem>();
             _audioSource = GetComponent<AudioSource>();
+            _audioSource.pitch = Random.Range(0.8f, 1.2f);
         }
 
         public void Destroy()
